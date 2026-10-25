@@ -8,20 +8,27 @@ x,
 -Web-palvelimen saa ladattua mm. komennolla sudo apt-get install apache2
 
 Raportti
-Aloitin tehtävän asentamalla Debian 13 virtuaalikoneen ja valitsin palveluntarjoajaksi UpCloudin. Valitsin palvelimen sijainniksi Suomen, 
+Aloitin tehtävän asentamalla Debian 13 virtuaalikoneen ja valitsin palveluntarjoajaksi UpCloudin. Käytin Debianin pystyttämiseen Teron
+ohjeita (lähde: https://terokarvinen.com/2021/install-debian-on-virtualbox/) Valitsin palvelimen sijainniksi Suomen, 
 jotta se toimisi mahdollisimman tehokkaasti. Valitsin palvelimen prosessoreiden määräksi yhden ja pidin kaikki muut astukset oletuksena. 
 Valitsin kirjautumismenetelmäksi SSH-avaimen. Generoin PowerShellillä SSH-avaimen komennolla ssh-keygen.exe. Avaimet löytyivät .ssh kansiosta. 
-Kopioin id_ed25519.pub tiedoston julkisen avaimen palvelimelle ja sitten loin palvelimen. 
+Kopioin id_ed25519.pub tiedoston julkisen avaimen palvelimelle ja sitten loin palvelimen.
 
 Pääsin PowerShellillä kirjautumaan Debianille komennolla ssh root@ip-osoite. SSH-menetelmän ansiosta kirjautuminen oli todella näppärä eikä 
 vaatinut salasanojen kirjoittelua. Sitten tein palvelimelle uuden käyttäjän Sofia adduser -komentoa käyttäen. Loin uudelle käyttäjälle ssh kansion
 mkdir -komennolla ja kopioin (cp) julkisen avaimen tiedoston sinne, jotta ssh:lla kirjautuminen onnistuisi tälle uudellekin käyttäjälle samalla 
 avaimella. Sitten, koska loin kansion root-käyttäjällä, niin vaihdoin kansion omistajan chown -komennolla Sofialle, jotta käyttäjä pääsee niihin
 käsiksi. Muokkasin myös kansion oikeudet komennolla chmod 700 /home/sofia/.ssh, jotta vain Sofia saa täydet käyttöoikeudet sisältöön. Muutin 
-Sofian sudo käyttäjäksi: adduser sofia sudo. Testasin että käyttäjälle kirjautuminen onnistui ja sillä tosiaan oli sudo oikeudet.
+Sofian sudo käyttäjäksi: adduser sofia sudo. Testasin että käyttäjälle kirjautuminen onnistui ja sillä tosiaan oli sudo oikeudet. Tämän kaiken opin
+luennolla Teron antamilla ohjeistuksilla.
 
-Sitten asensin palomuurin, ensiksi apt-get update ja sitten apt-get install ufw. Sitten palomuurista oli sallittava ssh-liikenne läpi komennolla
-ufw allow 22/tcp. Aktivoin palomuurin komennolla ufw enable. Seuraavaksi lukitsin root-tilin komennolla sudo usermod --lock root. Poistin myös
-rootin SSH-kirjautumisen menemällä sudoedit /etc/ssh/sshd_config ja sieltä vaihdoin kohdasta PermitRootLogin Yes -> no. Tallensin ja suljin editorin
-ja käynnistin pavelimen uudelleen komennolla sudo service ssh restart. Lopuksi asensin vielä web-palvelimen ja päätin asentaa Apachen. Se onnistui 
-komennolla sudo apt-get install apache2.
+Sitten asensin palomuurin sekä tein siihen asetuksia. Apuna käytin Teron palvelimelle julkaistua toisen oppilaan esimerkkiraporttia "Niemi 2025: H4 Tehtävät"
+(lähde: https://github.com/AONCODES/linux-course/blob/main/h4.md). Ensiksi kirjoitin apt-get update ja sitten apt-get install ufw. Sitten palomuurista 
+oli sallittava ssh-liikenne läpi komennolla ufw allow 22/tcp. Aktivoin palomuurin komennolla ufw enable. Seuraavaksi lukitsin root-tilin komennolla
+sudo usermod --lock root. Poistin myös rootin SSH-kirjautumisen menemällä sudoedit /etc/ssh/sshd_config ja sieltä vaihdoin kohdasta PermitRootLogin
+Yes -> no. Tallensin ja suljin editorin ja käynnistin pavelimen uudelleen komennolla sudo service ssh restart. Lopuksi asensin vielä web-palvelimen
+ja päätin asentaa Apachen. Se onnistui komennolla sudo apt-get install apache2. Näihinkin käytin apuna samaa esimerkkiraporttia.
+
+Lähteet:
+Karvinen 2024. Install Debian on Virtualbox. Luettavissa: https://terokarvinen.com/2021/install-debian-on-virtualbox/. Luettu: 25.10.2026.
+Niemi 2025. H4 Tehtävät. Luettavissa: https://github.com/AONCODES/linux-course/blob/main/h4.md. Luettu: 25.10.2026.
