@@ -1,1 +1,3 @@
 # palvelintenhallinta
+
+Works with SSH.
